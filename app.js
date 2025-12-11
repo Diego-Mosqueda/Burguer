@@ -30,6 +30,9 @@ class ErrorBoundary extends React.Component {
 }
 
 function App() {
+  const [showMenuModal, setShowMenuModal] = React.useState(false);
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
+
   React.useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -38,15 +41,25 @@ function App() {
     });
   }, []);
 
+  const handleOpenModal = (category) => {
+    setSelectedCategory(category);
+    setShowMenuModal(true);
+  };
+
   try {
     return (
       <div data-name="app" data-file="app.js">
         <Navbar />
         <Hero />
-        <Menu />
+        <Menu onOpenModal={handleOpenModal} />
         <About />
         <Contact />
         <WhatsAppButton />
+        <MenuModal 
+          show={showMenuModal} 
+          onClose={() => setShowMenuModal(false)}
+          category={selectedCategory}
+        />
       </div>
     );
   } catch (error) {
